@@ -1,0 +1,59 @@
+package hello;
+
+
+ import java.io.File;
+ import java.io.FileInputStream;
+ import java.io.FileNotFoundException;
+ import java.io.IOException;
+ import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
+ import org.apache.poi.ss.usermodel.*;
+
+ import static org.apache.commons.lang3.StringUtils.strip;
+
+/**
+     *
+     * @author khaled
+     */
+    public class Xlreader {
+
+        /**
+         * @param args the command line arguments
+         */
+        public static void main(String[] args) throws FileNotFoundException, IOException, InvalidFormatException {
+            File file = new File("C:\\Test\\myXLSX file.xlsx");
+            Workbook workbook = WorkbookFactory.create(new FileInputStream(file));
+            Sheet sheet = workbook.getSheetAt(0);
+            int column_index_1 = 0;
+            int column_index_2 = 0;
+            int column_index_3 = 0;
+            Row row = sheet.getRow(0);
+            for (Cell cell : row) {
+                // Column header names.
+                switch (cell.getStringCellValue()) {
+                    case "MyFirst Column":
+                        column_index_1 = cell.getColumnIndex();
+                        break;
+                    case "3rd Column":
+                        column_index_2 = cell.getColumnIndex();
+                        break;
+                    case "forth Column":
+                        column_index_3 = cell.getColumnIndex();
+                        break;
+                }
+            }
+
+            for (Row r : sheet) {
+                //System.out.println(r.getCell(column_index_1).getStringCellValue());
+                if(r.getRowNum() == 0 || r.getCell(column_index_1).getStringCellValue().equals("file1")) {
+                    //System.out.println(r.getRowNum());
+                    //if (r.getRowNum() == 0) continue;//hearders
+
+                    Cell c_1 = r.getCell(column_index_1);
+                    Cell c_2 = r.getCell(column_index_2);
+                    Cell c_3 = r.getCell(column_index_3);
+                    System.out.print("  " + c_1 + "   " + c_2 + "   " + c_3 + "\n");
+                }
+                }
+            }
+
+        }
