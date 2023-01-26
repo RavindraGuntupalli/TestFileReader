@@ -1,0 +1,17 @@
+package hello;
+
+import io.cucumber.java.en.Given;
+
+import java.util.HashMap;
+
+public class testcsv {
+    @Given("Input claimType {string}")
+    public void inputClaimType(String arg0) {
+        CsvReader CR= new CsvReader();
+
+        HashMap row=CR.getCsvData(arg0);
+
+
+        System.out.println("NINO  : " + row.get("NINO").toString());
+    }
+}
