@@ -1,0 +1,64 @@
+package hello;
+
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVRecord;
+import java.io.IOException;
+import java.io.Reader;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.HashMap;
+import java.util.List;
+
+public class CsvReader {
+    public static HashMap getCsvData(String claimType) {
+
+        int NameIndex=0;
+        List ColumnList = null;
+        List RowValues=null;
+        HashMap map=null;
+
+    try {
+        Reader reader = Files.newBufferedReader(Paths.get("C:\\PractiseDataFactory\\Emp.csv"));
+
+        // read csv file
+        Iterable<CSVRecord> records = CSVFormat.DEFAULT.parse(reader);
+        for (CSVRecord record : records) {
+
+            if (record.getRecordNumber() == 1) {
+                ColumnList = record.stream().toList();
+                NameIndex = ColumnList.indexOf("claimType");
+                continue;
+            }
+
+            if (NameIndex >= 0) {
+
+                if (record.get(NameIndex).equals(claimType)) {
+                    RowValues = record.stream().toList();
+                    break;
+                }
+            } else {
+                System.out.println("Column Not Found");
+                break;
+            }
+        }
+
+            if(RowValues != null) {
+                map = new HashMap();
+
+                for (int i = 0; i <= ColumnList.size() - 1; i++) {
+                    for (int j = 0; j <= RowValues.size() - 1; j++) {
+                        map.put(ColumnList.get(i), RowValues.get(i));
+                    }
+                }
+            }
+            else{
+                System.out.println("Value not found");
+            }
+    }
+    catch (IOException ex) {
+        ex.printStackTrace();
+    }
+
+    return map;
+}
+}
